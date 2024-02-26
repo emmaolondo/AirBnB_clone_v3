@@ -1,24 +1,11 @@
 #!/usr/bin/python3
-"""Testing file
+""" Test .get() and .count() methods
 """
-import json
-import requests
+from models import storage
+from models.state import State
 
-if __name__ == "__main__":
-    """ Get all states id
-    """
-    r = requests.get("http://0.0.0.0:5000/api/v1/states")
-    r_j = r.json()
+print("All objects: {}".format(storage.count()))
+print("State objects: {}".format(storage.count(State)))
 
-    state_ids = []
-    for state_j in r_j:
-        state_ids.append(state_j.get('id'))
-
-    # Arizona + California
-
-    """ POST /api/v1/places_search
-    """
-    r = requests.post("http://0.0.0.0:5000/api/v1/places_search", data=json.dumps(
-        {'states': state_ids}), headers={'Content-Type': "application/json"})
-    r_j = r.json()
-    print(len(r_j))
+first_state_id = list(storage.all(State).values())[0].id
+print("First state: {}".format(storage.get(State, first_state_id)))
